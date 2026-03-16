@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
  * Vite configuration for LifeOS.
  */
 export default defineConfig({
-  base: './',
+  base: '/lifeos-personal-optimization-system/',
   plugins: [react(), tailwindcss()],
   server: {
     port: 3000,

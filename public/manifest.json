@@ -2,7 +2,7 @@
   "name": "LifeOS — The Command Center",
   "short_name": "LifeOS",
   "description": "Your personal life optimization command center",
-  "start_url": "./",
+  "start_url": "/lifeos-personal-optimization-system/",
   "display": "standalone",
   "background_color": "#050505",
   "theme_color": "#050505",
