@@ -182,7 +182,7 @@ const DashboardLayout: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden" style={{ background: '#060608' }}>
+    <div className="flex h-screen overflow-hidden" style={{ background: '#08090d' }}>
       {/* ── Sidebar ── */}
       {/* Mobile overlay */}
       {sidebarOpen && (
@@ -192,14 +192,14 @@ const DashboardLayout: React.FC = () => {
       <aside className={[
         'fixed lg:static z-40 flex flex-col h-full w-60 flex-shrink-0 border-r border-white/[0.04] transition-transform duration-300 lg:translate-x-0',
         sidebarOpen ? 'translate-x-0' : '-translate-x-full',
-      ].join(' ')} style={{ background: 'rgba(8,8,14,0.95)', backdropFilter: 'blur(20px)' }}>
+      ].join(' ')} style={{ background: 'rgba(10,11,18,0.95)', backdropFilter: 'blur(20px)' }}>
 
         {/* Logo */}
         <div className="flex items-center gap-3 px-5 pt-6 pb-8">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
             <span className="text-black scale-90">{Icons.zap}</span>
           </div>
-          <span className="text-sm font-bold text-white/70 tracking-wide">LifeOS</span>
+          <span className="text-sm font-bold text-white/70 tracking-wide font-display">LifeOS</span>
         </div>
 
         {/* Nav */}
@@ -213,7 +213,7 @@ const DashboardLayout: React.FC = () => {
               className={({ isActive }) => [
                 'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all',
                 isActive
-                  ? 'bg-amber-500/10 text-amber-400'
+                  ? 'nav-active bg-white/[0.04] text-amber-400'
                   : 'text-white/25 hover:text-white/50 hover:bg-white/[0.03]',
               ].join(' ')}
             >
@@ -231,7 +231,7 @@ const DashboardLayout: React.FC = () => {
               <div className="w-7 h-7 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-[10px] font-bold text-black flex-shrink-0">
                 {user.email?.[0]?.toUpperCase() || 'U'}
               </div>
-              <span className="text-[11px] text-white/30 truncate">{user.email}</span>
+              <span className="text-[11px] text-white/30 truncate max-w-[120px]">{user.email}</span>
             </div>
           )}
           <button
@@ -239,7 +239,7 @@ const DashboardLayout: React.FC = () => {
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/20 hover:text-white/40 hover:bg-white/[0.03] transition-all"
           >
             {Icons.user}
-            {user ? 'Log out' : 'Sign in'}
+            <span className="font-display">{user ? 'Log out' : 'Sign in'}</span>
           </button>
         </div>
       </aside>
@@ -247,7 +247,7 @@ const DashboardLayout: React.FC = () => {
       {/* ── Main ── */}
       <div className="flex-grow flex flex-col min-w-0">
         {/* Top bar */}
-        <header className="flex items-center justify-between px-6 py-4 border-b border-white/[0.04] flex-shrink-0" style={{ background: 'rgba(6,6,8,0.8)', backdropFilter: 'blur(12px)' }}>
+        <header className="flex items-center justify-between px-6 py-4 border-b border-white/[0.04] flex-shrink-0" style={{ background: 'rgba(10,11,18,0.85)', backdropFilter: 'blur(12px)' }}>
           <div className="flex items-center gap-4">
             <button
               onClick={() => setSidebarOpen(o => !o)}
@@ -260,7 +260,7 @@ const DashboardLayout: React.FC = () => {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold" style={{ background: 'rgba(245,158,11,0.08)', color: '#F59E0B' }}>
               {Icons.zap}
-              <span className="tabular-nums">{energy.energy}%</span>
+              <span className="tabular-nums"><span className="font-display">{energy.energy}</span>%</span>
             </div>
             {user && (
               <div className="w-7 h-7 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-[10px] font-bold text-black">

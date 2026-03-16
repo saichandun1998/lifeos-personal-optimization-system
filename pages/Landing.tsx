@@ -23,9 +23,9 @@ const PRO_FEATURES = ['Everything in Free', 'Unlimited habits', 'Cloud sync acro
 
 const Landing: React.FC = () => {
   return (
-    <div className="min-h-screen" style={{ background: '#060608' }}>
+    <div className="min-h-screen" style={{ background: '#08090d' }}>
       {/* Background orbs */}
-      <div className="bg-orb" style={{ width: 700, height: 700, background: 'radial-gradient(circle, rgba(245,158,11,0.08), transparent)', top: -300, right: -200, animation: 'orb-1 25s ease-in-out infinite' }} />
+      <div className="bg-orb" style={{ width: 700, height: 700, background: 'radial-gradient(circle, rgba(240,160,48,0.08), transparent)', top: -300, right: -200, animation: 'orb-1 25s ease-in-out infinite' }} />
       <div className="bg-orb" style={{ width: 600, height: 600, background: 'radial-gradient(circle, rgba(59,130,246,0.06), transparent)', bottom: -200, left: -200, animation: 'orb-2 30s ease-in-out infinite' }} />
 
       {/* ── Navbar ── */}
@@ -34,9 +34,9 @@ const Landing: React.FC = () => {
           <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
             <span className="text-black">{Icons.zap}</span>
           </div>
-          <span className="text-sm font-bold text-white/80 tracking-wide">LifeOS</span>
+          <span className="font-display text-sm font-bold text-white/80 tracking-wide">LifeOS</span>
         </div>
-        <div className="hidden md:flex items-center gap-8 text-sm text-white/40 font-medium">
+        <div className="hidden md:flex items-center gap-8 text-sm text-white/40 font-display font-medium">
           <a href="#features" className="hover:text-white/70 transition-colors">Features</a>
           <a href="#pricing" className="hover:text-white/70 transition-colors">Pricing</a>
         </div>
@@ -53,23 +53,23 @@ const Landing: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <div className="inline-block mb-6 px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-amber-400/80 border border-amber-400/20" style={{ background: 'rgba(245,158,11,0.06)' }}>
+          <div className="surface-elevated font-display inline-block mb-6 px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest text-amber-400/80">
             Personal Optimization System
           </div>
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-serif font-bold leading-[0.95] mb-8">
-            <span className="gradient-text">Your Life,</span>
+          <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold leading-[0.95] mb-8" style={{ letterSpacing: '-0.03em' }}>
+            <span className="gradient-text">Your Life.</span>
             <br />
-            <span className="text-white">Engineered.</span>
+            <span className="text-white">Optimized.</span>
           </h1>
-          <p className="text-lg md:text-xl text-white/35 max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
+          <p className="text-lg md:text-xl text-white/40 max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
             The command center that syncs your tasks with your natural energy. Track habits, balance your life, and make better decisions — all in one place.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/login?signup=1" className="group px-8 py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-black font-bold rounded-xl text-sm hover:shadow-lg hover:shadow-amber-500/20 transition-all active:scale-[0.98] animate-[glow-pulse_2.5s_ease-in-out_infinite]" style={{ boxShadow: '0 0 20px rgba(245,158,11,0.25)' }}>
+            <Link to="/login?signup=1" className="group px-8 py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-black font-bold rounded-xl text-sm hover:shadow-lg hover:shadow-amber-500/20 transition-all active:scale-[0.98] animate-[glow-pulse_3s_ease-in-out_infinite]">
               Get Started Free
               <span className="ml-2 inline-block group-hover:translate-x-1 transition-transform">&rarr;</span>
             </Link>
-            <Link to="/app" className="px-8 py-5 text-white/40 font-semibold text-sm hover:text-white/60 transition-colors border border-white/[0.06] rounded-xl hover:border-white/[0.1]">
+            <Link to="/app" className="shimmer px-8 py-5 text-white/40 font-semibold text-sm hover:text-white/60 transition-colors border border-white/[0.06] rounded-xl hover:border-white/[0.1]">
               Try Demo
             </Link>
           </div>
@@ -86,7 +86,7 @@ const Landing: React.FC = () => {
           <div className="relative rounded-2xl overflow-hidden border border-white/[0.08]" style={{ background: 'rgba(255,255,255,0.02)', backdropFilter: 'blur(20px)' }}>
             <div className="p-1">
               {/* Fake browser chrome */}
-              <div className="flex items-center gap-2 px-4 py-3 rounded-t-xl" style={{ background: 'rgba(255,255,255,0.03)' }}>
+              <div className="shimmer flex items-center gap-2 px-4 py-3 rounded-t-xl" style={{ background: 'rgba(255,255,255,0.03)' }}>
                 <div className="w-3 h-3 rounded-full bg-white/[0.08]" />
                 <div className="w-3 h-3 rounded-full bg-white/[0.08]" />
                 <div className="w-3 h-3 rounded-full bg-white/[0.08]" />
@@ -134,7 +134,7 @@ const Landing: React.FC = () => {
       {/* ── Features ── */}
       <section id="features" className="relative z-10 max-w-6xl mx-auto px-6 py-24">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">Everything you need to operate at peak.</h2>
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold text-white mb-4">Everything you need to operate at peak.</h2>
           <p className="text-white/30 max-w-xl mx-auto font-medium">Six integrated tools that work together to optimize how you spend your energy, time, and attention.</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -145,10 +145,9 @@ const Landing: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08 }}
               viewport={{ once: true }}
-              className="group p-6 rounded-2xl border border-white/[0.04] hover:border-white/[0.08] transition-all"
-              style={{ background: 'rgba(255,255,255,0.015)' }}
+              className="group surface p-6 rounded-2xl hover:border-white/[0.08] transition-all"
             >
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: f.color + '12', color: f.color }}>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{ background: f.color + '12', color: f.color }}>
                 {f.icon}
               </div>
               <h3 className="text-sm font-bold text-white/85 mb-2 tracking-wide">{f.title}</h3>
@@ -161,7 +160,7 @@ const Landing: React.FC = () => {
       {/* ── How It Works ── */}
       <section className="relative z-10 max-w-5xl mx-auto px-6 py-24">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">Three steps to a better day.</h2>
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold text-white mb-4">Three steps to a better day.</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {STEPS.map((s, i) => (
@@ -173,8 +172,8 @@ const Landing: React.FC = () => {
               viewport={{ once: true }}
               className="text-center"
             >
-              <div className="text-5xl font-serif font-bold text-white/[0.04] mb-4">{s.num}</div>
-              <h3 className="text-sm font-bold text-white/80 mb-2 uppercase tracking-wider">{s.title}</h3>
+              <div className="font-display text-7xl font-bold mb-4" style={{ color: 'rgba(240, 160, 48, 0.12)' }}>{s.num}</div>
+              <h3 className="font-display text-sm font-bold text-white/80 mb-2 uppercase tracking-wider">{s.title}</h3>
               <p className="text-xs text-white/30 leading-relaxed font-medium">{s.desc}</p>
               {i < 2 && <div className="hidden md:block absolute" />}
             </motion.div>
@@ -185,15 +184,15 @@ const Landing: React.FC = () => {
       {/* ── Pricing ── */}
       <section id="pricing" className="relative z-10 max-w-4xl mx-auto px-6 py-24">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">Simple, honest pricing.</h2>
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold text-white mb-4">Simple, honest pricing.</h2>
           <p className="text-white/30 font-medium">Start free. Upgrade when you need cloud sync.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
           {/* Free */}
           <div className="p-8 rounded-2xl border border-white/[0.06]" style={{ background: 'rgba(255,255,255,0.02)' }}>
-            <div className="text-xs font-bold text-white/30 uppercase tracking-widest mb-2">Free</div>
+            <div className="font-display text-xs font-bold text-white/30 uppercase tracking-widest mb-2">Free</div>
             <div className="flex items-baseline gap-1 mb-6">
-              <span className="text-4xl font-bold text-white">$0</span>
+              <span className="font-display text-5xl font-bold text-white">$0</span>
               <span className="text-white/20 text-sm font-medium">/ forever</span>
             </div>
             <ul className="space-y-3 mb-8">
@@ -209,11 +208,11 @@ const Landing: React.FC = () => {
             </Link>
           </div>
           {/* Pro */}
-          <div className="relative p-8 rounded-2xl border border-amber-500/20 overflow-hidden" style={{ background: 'rgba(245,158,11,0.03)' }}>
+          <div className="surface-elevated relative p-8 rounded-2xl border border-amber-500/10 overflow-hidden">
             <div className="absolute top-0 right-0 px-3 py-1 text-[10px] font-bold bg-amber-500 text-black rounded-bl-lg uppercase tracking-wider">Popular</div>
-            <div className="text-xs font-bold text-amber-400/60 uppercase tracking-widest mb-2">Pro</div>
+            <div className="font-display text-xs font-bold text-amber-400/60 uppercase tracking-widest mb-2">Pro</div>
             <div className="flex items-baseline gap-1 mb-6">
-              <span className="text-4xl font-bold text-white">$9</span>
+              <span className="font-display text-5xl font-bold text-white">$9</span>
               <span className="text-white/20 text-sm font-medium">/ month</span>
             </div>
             <ul className="space-y-3 mb-8">
@@ -237,10 +236,10 @@ const Landing: React.FC = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="p-12 rounded-3xl border border-white/[0.04]"
-          style={{ background: 'linear-gradient(135deg, rgba(245,158,11,0.04), rgba(59,130,246,0.04))' }}
+          className="surface-elevated p-12 rounded-3xl"
+          style={{ background: 'linear-gradient(135deg, rgba(240,160,48,0.04), rgba(59,130,246,0.04))' }}
         >
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">Ready to optimize?</h2>
+          <h2 className="font-display text-3xl md:text-4xl font-extrabold text-white mb-4">Ready to optimize?</h2>
           <p className="text-white/30 mb-8 font-medium">Start free. No credit card required.</p>
           <Link to="/login?signup=1" className="inline-block px-10 py-4 bg-white text-black font-bold rounded-xl text-sm hover:bg-white/90 transition-all active:scale-[0.98]">
             Get Started Now &rarr;
@@ -249,7 +248,8 @@ const Landing: React.FC = () => {
       </section>
 
       {/* ── Footer ── */}
-      <footer className="relative z-10 max-w-6xl mx-auto px-6 py-12 border-t border-white/[0.04]">
+      <footer className="relative z-10 max-w-6xl mx-auto px-6 py-12">
+        <div className="h-px bg-gradient-to-r from-transparent via-white/[0.04] to-transparent mb-12" />
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-md bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
