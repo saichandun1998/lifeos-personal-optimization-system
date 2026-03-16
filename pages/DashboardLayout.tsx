@@ -220,8 +220,16 @@ const DashboardLayout: React.FC = () => {
         </nav>
 
         {/* Bottom */}
-        <div className="px-3 pb-6 space-y-1">
-          <div className="mx-3 mb-3 h-px bg-white/[0.04]" />
+        <div className="px-3 pb-6 space-y-2">
+          <div className="mx-3 mb-2 h-px bg-white/[0.04]" />
+          {user && (
+            <div className="px-3 py-2 flex items-center gap-3">
+              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-[10px] font-bold text-black flex-shrink-0">
+                {user.email?.[0]?.toUpperCase() || 'U'}
+              </div>
+              <span className="text-[11px] text-white/30 truncate">{user.email}</span>
+            </div>
+          )}
           <button
             onClick={handleLogout}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/20 hover:text-white/40 hover:bg-white/[0.03] transition-all"
