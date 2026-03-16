@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>LifeOS</title>
+    <script>
+      // SPA redirect for GitHub Pages
+      // Redirects 404s back to index.html with the path preserved as a query param
+      const path = window.location.pathname;
+      const repo = path.split('/').filter(Boolean)[0] || '';
+      window.location.replace(
+        window.location.origin + '/' + repo + '/?p=' + encodeURIComponent(
+          path.replace('/' + repo, '')
+        ) + window.location.search.replace('?', '&') + window.location.hash
+      );
+    </script>
+  </head>
+  <body></body>
+</html>
