@@ -47,7 +47,7 @@ const QuickCapture: React.FC<QuickCaptureProps> = ({ notes, onAdd, onDelete }) =
       </div>
 
       {/* Notes */}
-      <div className="space-y-2 max-h-[200px] overflow-y-auto pr-1">
+      <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1">
         {notes.length === 0 ? (
           <p className="text-center text-white/10 text-xs py-6 font-medium">No sparks captured yet</p>
         ) : (

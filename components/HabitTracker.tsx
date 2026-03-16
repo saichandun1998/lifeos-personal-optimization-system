@@ -75,7 +75,7 @@ const HabitTracker: React.FC<HabitTrackerProps> = ({ habits, onToggle, onAdd, on
       </div>
 
       {/* Habit list */}
-      <div className="space-y-2 max-h-[280px] overflow-y-auto pr-1">
+      <div className="space-y-2 max-h-[450px] overflow-y-auto pr-1">
         {habits.length === 0 && (
           <p className="text-center text-white/12 text-xs py-6 font-medium">No habits yet — add one below</p>
         )}

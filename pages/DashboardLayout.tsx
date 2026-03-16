@@ -9,7 +9,7 @@ import {
   generateId,
   todayKey,
 } from '../utils';
-import { Habit, Task, Note, LifeScores, Priority } from '../types';
+import { Habit, Task, Note, LifeScores, Priority, FocusSession, DailyReflection } from '../types';
 import { supabase } from '../src/lib/supabase';
 import { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
 
@@ -28,6 +28,10 @@ export interface DashboardContextType {
   handleAddNote: (text: string) => void;
   handleDeleteNote: (id: string) => void;
   setLifeScores: React.Dispatch<React.SetStateAction<LifeScores>>;
+  focusSessions: FocusSession[];
+  dailyReflections: DailyReflection[];
+  handleAddFocusSession: (session: FocusSession) => void;
+  handleAddReflection: (reflection: DailyReflection) => void;
 }
 
 export function useDashboard() {
@@ -35,12 +39,11 @@ export function useDashboard() {
 }
 
 const NAV_ITEMS = [
-  { to: '/app', icon: Icons.activity, label: 'Overview', end: true },
+  { to: '/app', icon: Icons.activity, label: 'Dashboard', end: true },
+  { to: '/app/focus', icon: Icons.timer, label: 'Focus', end: false },
   { to: '/app/schedule', icon: Icons.clock, label: 'Schedule', end: false },
   { to: '/app/habits', icon: Icons.flame, label: 'Habits', end: false },
-  { to: '/app/radar', icon: Icons.target, label: 'Life Radar', end: false },
-  { to: '/app/notes', icon: Icons.lightbulb, label: 'Notes', end: false },
-  { to: '/app/decide', icon: Icons.shuffle, label: 'Decide', end: false },
+  { to: '/app/journal', icon: Icons.journal, label: 'Journal', end: false },
 ];
 
 const DashboardLayout: React.FC = () => {
@@ -62,6 +65,12 @@ const DashboardLayout: React.FC = () => {
     loadFromStorage('lifeos_scores', {
       health: 6, work: 7, relationships: 5, growth: 4, finance: 6, joy: 7,
     })
+  );
+  const [focusSessions, setFocusSessions] = useState<FocusSession[]>(() =>
+    loadFromStorage('lifeos_focus', [])
+  );
+  const [dailyReflections, setDailyReflections] = useState<DailyReflection[]>(() =>
+    loadFromStorage('lifeos_reflections', [])
   );
 
   // Auth
@@ -99,6 +108,7 @@ const DashboardLayout: React.FC = () => {
     const syncData = async () => {
       await client.from('user_data').upsert({
         user_id: user.id, habits, tasks, notes, scores: lifeScores,
+        focusSessions, dailyReflections,
         updated_at: new Date().toISOString(),
       });
     };
@@ -131,6 +141,8 @@ const DashboardLayout: React.FC = () => {
   useEffect(() => { saveToStorage('lifeos_tasks', tasks); }, [tasks]);
   useEffect(() => { saveToStorage('lifeos_notes', notes); }, [notes]);
   useEffect(() => { saveToStorage('lifeos_scores', lifeScores); }, [lifeScores]);
+  useEffect(() => { saveToStorage('lifeos_focus', focusSessions); }, [focusSessions]);
+  useEffect(() => { saveToStorage('lifeos_reflections', dailyReflections); }, [dailyReflections]);
 
   // Handlers
   const handleAddTask = useCallback((n: string, h: number, p: Priority) => {
@@ -162,6 +174,12 @@ const DashboardLayout: React.FC = () => {
   const handleDeleteNote = useCallback((id: string) => {
     setNotes(prev => prev.filter(n => n.id !== id));
   }, []);
+  const handleAddFocusSession = useCallback((session: FocusSession) => {
+    setFocusSessions(prev => [...prev, session]);
+  }, []);
+  const handleAddReflection = useCallback((reflection: DailyReflection) => {
+    setDailyReflections(prev => [...prev, reflection]);
+  }, []);
 
   const handleLogout = async () => {
     if (supabase && user) {
@@ -179,6 +197,7 @@ const DashboardLayout: React.FC = () => {
     handleAddTask, handleToggleTask, handleDeleteTask,
     handleToggleHabit, handleAddHabit, handleDeleteHabit,
     handleAddNote, handleDeleteNote, setLifeScores,
+    focusSessions, dailyReflections, handleAddFocusSession, handleAddReflection,
   };
 
   return (

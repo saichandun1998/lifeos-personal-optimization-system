@@ -39,3 +39,20 @@ export interface EnergyPoint {
   energy: number;
   label: string;
 }
+
+export interface FocusSession {
+  id: string;
+  type: 'focus' | 'short-break' | 'long-break';
+  duration: number;
+  startedAt: string;
+  completedAt: string;
+  taskId?: string;
+  energyAtStart: number;
+}
+
+export interface DailyReflection {
+  id: string;
+  date: string;
+  rating: number;
+  word: string;
+}

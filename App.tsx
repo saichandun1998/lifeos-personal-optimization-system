@@ -7,9 +7,8 @@ import DashboardLayout from './pages/DashboardLayout';
 import Overview from './pages/dashboard/Overview';
 import Schedule from './pages/dashboard/Schedule';
 import Habits from './pages/dashboard/Habits';
-import Radar from './pages/dashboard/Radar';
-import Notes from './pages/dashboard/Notes';
-import Decide from './pages/dashboard/Decide';
+import Focus from './pages/dashboard/Focus';
+import Journal from './pages/dashboard/Journal';
 
 /** Handles OAuth redirect — after Google login, Supabase puts tokens in the URL hash.
  *  BrowserRouter doesn't use the hash, so Supabase can read it freely.
@@ -49,11 +48,14 @@ const App: React.FC = () => {
         {/* Dashboard */}
         <Route path="/app" element={<DashboardLayout />}>
           <Route index element={<Overview />} />
+          <Route path="focus" element={<Focus />} />
           <Route path="schedule" element={<Schedule />} />
           <Route path="habits" element={<Habits />} />
-          <Route path="radar" element={<Radar />} />
-          <Route path="notes" element={<Notes />} />
-          <Route path="decide" element={<Decide />} />
+          <Route path="journal" element={<Journal />} />
+          {/* Redirects for old routes */}
+          <Route path="notes" element={<Navigate to="/app/journal" replace />} />
+          <Route path="decide" element={<Navigate to="/app/journal" replace />} />
+          <Route path="radar" element={<Navigate to="/app/habits" replace />} />
         </Route>
 
         {/* Catch-all */}

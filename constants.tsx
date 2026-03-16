@@ -14,7 +14,12 @@ export const Icons = {
   plus: <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>,
   chevDown: <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>,
   info: <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>,
-  user: <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+  user: <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>,
+  timer: <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2 2"></path><path d="M5 3L2 6"></path><path d="M22 6l-3-3"></path><line x1="6" y1="19" x2="4" y2="21"></line><line x1="18" y1="19" x2="20" y2="21"></line><line x1="12" y1="2" x2="12" y2="5"></line></svg>,
+  journal: <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path><line x1="8" y1="7" x2="16" y2="7"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>,
+  play: <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>,
+  pause: <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>,
+  refresh: <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
 };
 
 export const ENERGY_CURVE: EnergyPoint[] = [
@@ -60,4 +65,20 @@ export const DECISION_CATEGORIES = [
   { category: "Next Task", options: ["High Impact Work", "Admin/Email Cleanup", "Strategy Brainstorm", "Skill Practice"] },
   { category: "Break Activity", options: ["Quick Walk", "5-Min Meditation", "Power Nap", "Read 5 Pages"] },
   { category: "Workout Type", options: ["Yoga Flow", "Heavy Lifting", "Zone 2 Cardio", "Active Recovery"] }
+];
+
+export const FOCUS_PRESETS = [
+  { type: 'focus' as const, duration: 25, label: 'Focus' },
+  { type: 'short-break' as const, duration: 5, label: 'Short Break' },
+  { type: 'long-break' as const, duration: 15, label: 'Long Break' },
+];
+
+export const DAILY_PROMPTS = [
+  "What's the one thing that would make today great?",
+  "What are you grateful for right now?",
+  "What's draining your energy today?",
+  "What did you learn today?",
+  "What would you do differently tomorrow?",
+  "What's one small win from today?",
+  "How did you take care of yourself today?",
 ];
