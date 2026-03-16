@@ -41,7 +41,9 @@ export const MOTIVATIONAL_QUOTES = [
 export const DEFAULT_HABITS: Habit[] = [
   { id: '1', name: "Morning Sunlight", emoji: "☀️", streak: 5, done: false },
   { id: '2', name: "Deep Work Block", emoji: "💻", streak: 12, done: false },
-  { id: '3', name: "Gratitude Journal", emoji: "✍️", streak: 8, done: false }
+  { id: '3', name: "Gratitude Journal", emoji: "✍️", streak: 8, done: false },
+  { id: '4', name: "Read 20 Pages", emoji: "📚", streak: 3, done: false },
+  { id: '5', name: "Evening Walk", emoji: "🚶", streak: 15, done: false }
 ];
 
 export const LIFE_DIMENSIONS = [

@@ -164,8 +164,12 @@ const DashboardLayout: React.FC = () => {
   }, []);
 
   const handleLogout = async () => {
-    if (supabase) await supabase.auth.signOut();
-    navigate('/');
+    if (supabase && user) {
+      await supabase.auth.signOut();
+      navigate('/');
+    } else {
+      navigate('/login');
+    }
   };
 
   const energy = getCurrentEnergy();

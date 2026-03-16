@@ -65,11 +65,11 @@ const Landing: React.FC = () => {
             The command center that syncs your tasks with your natural energy. Track habits, balance your life, and make better decisions — all in one place.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/login?signup=1" className="group px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-black font-bold rounded-xl text-sm hover:shadow-lg hover:shadow-amber-500/20 transition-all active:scale-[0.98]">
+            <Link to="/login?signup=1" className="group px-8 py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-black font-bold rounded-xl text-sm hover:shadow-lg hover:shadow-amber-500/20 transition-all active:scale-[0.98] animate-[glow-pulse_2.5s_ease-in-out_infinite]" style={{ boxShadow: '0 0 20px rgba(245,158,11,0.25)' }}>
               Get Started Free
               <span className="ml-2 inline-block group-hover:translate-x-1 transition-transform">&rarr;</span>
             </Link>
-            <Link to="/app" className="px-8 py-4 text-white/40 font-semibold text-sm hover:text-white/60 transition-colors border border-white/[0.06] rounded-xl hover:border-white/[0.1]">
+            <Link to="/app" className="px-8 py-5 text-white/40 font-semibold text-sm hover:text-white/60 transition-colors border border-white/[0.06] rounded-xl hover:border-white/[0.1]">
               Try Demo
             </Link>
           </div>

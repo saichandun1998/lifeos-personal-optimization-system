@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Icons } from '../../constants';
+import { Icons, MOTIVATIONAL_QUOTES } from '../../constants';
 import { useDashboard } from '../DashboardLayout';
 import { getCurrentEnergy, getGreeting } from '../../utils';
+import { useMemo } from 'react';
 import EnergyCurve from '../../components/EnergyCurve';
 
 const Overview: React.FC = () => {
@@ -16,6 +17,8 @@ const Overview: React.FC = () => {
   const completionRate = Math.round((tasksDone / (tasks.length || 1)) * 100);
   const habitsDone = habits.filter(h => h.done).length;
   const avg = (Object.values(lifeScores).reduce((a, b) => a + b, 0) / 6).toFixed(1);
+
+  const quote = useMemo(() => MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)], []);
 
   const stats = [
     { label: 'Energy', value: energy.energy + '%', desc: energy.label, color: '#F59E0B', icon: Icons.zap },
@@ -35,6 +38,46 @@ const Overview: React.FC = () => {
         <h1 className="text-3xl md:text-4xl font-serif font-bold text-white mb-1">{getGreeting()}</h1>
         <p className="text-sm text-white/25 font-medium">Here's your operational status.</p>
       </motion.div>
+
+      {/* Welcome / Onboarding (shown when there are 0 tasks) */}
+      {tasks.length === 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="p-6 rounded-2xl border border-amber-500/20"
+          style={{ background: 'rgba(245,158,11,0.04)' }}
+        >
+          <h2 className="text-lg font-bold text-white mb-2">Welcome to LifeOS</h2>
+          <p className="text-sm text-white/40 mb-4 leading-relaxed font-medium">
+            Your personal optimization command center. Get started by exploring the tools below:
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {[
+              { to: '/app/schedule', label: 'Schedule', desc: 'Plan tasks around your energy curve', icon: Icons.clock, color: '#3B82F6' },
+              { to: '/app/habits', label: 'Habits', desc: 'Build streaks with daily habits', icon: Icons.flame, color: '#10B981' },
+              { to: '/app/radar', label: 'Life Radar', desc: 'Rate and balance 6 life dimensions', icon: Icons.target, color: '#8B5CF6' },
+              { to: '/app/notes', label: 'Quick Notes', desc: 'Capture ideas before they vanish', icon: Icons.lightbulb, color: '#EAB308' },
+              { to: '/app/decide', label: 'Decide', desc: 'Break analysis paralysis instantly', icon: Icons.shuffle, color: '#EC4899' },
+            ].map((item, i) => (
+              <Link
+                key={i}
+                to={item.to}
+                className="group flex items-center gap-3 p-3 rounded-xl border border-white/[0.04] hover:border-white/[0.1] transition-all"
+                style={{ background: 'rgba(255,255,255,0.02)' }}
+              >
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: item.color + '15', color: item.color }}>
+                  {item.icon}
+                </div>
+                <div>
+                  <span className="text-sm font-semibold text-white/70 group-hover:text-white/90 transition-colors">{item.label}</span>
+                  <p className="text-[11px] text-white/25 font-medium">{item.desc}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -75,22 +118,40 @@ const Overview: React.FC = () => {
         <EnergyCurve tasks={tasks} />
       </motion.div>
 
-      {/* Quick Links */}
+      {/* Quick Links (with colored left borders) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
           { to: '/app/habits', label: 'Habits', desc: `${habitsDone}/${habits.length} done today`, icon: Icons.flame, color: '#10B981' },
           { to: '/app/radar', label: 'Life Radar', desc: `Balance score: ${avg}`, icon: Icons.target, color: '#3B82F6' },
           { to: '/app/notes', label: 'Quick Notes', desc: `${notes.length} sparks captured`, icon: Icons.lightbulb, color: '#EAB308' },
         ].map((item, i) => (
-          <Link key={i} to={item.to} className="group p-4 rounded-2xl border border-white/[0.04] hover:border-white/[0.08] transition-all" style={{ background: 'rgba(255,255,255,0.015)' }}>
+          <Link
+            key={i}
+            to={item.to}
+            className="group relative p-4 rounded-2xl border border-white/[0.04] hover:border-white/[0.08] transition-all overflow-hidden"
+            style={{ background: 'rgba(255,255,255,0.015)' }}
+          >
+            <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl" style={{ background: item.color }} />
             <div className="flex items-center gap-3 mb-2">
-              <span style={{ color: item.color }}>{item.icon}</span>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: item.color + '15', color: item.color }}>
+                {item.icon}
+              </div>
               <span className="text-sm font-semibold text-white/60 group-hover:text-white/80 transition-colors">{item.label}</span>
             </div>
-            <p className="text-xs text-white/20 font-medium">{item.desc}</p>
+            <p className="text-xs text-white/20 font-medium pl-11">{item.desc}</p>
           </Link>
         ))}
       </div>
+
+      {/* Motivational Quote */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6 }}
+        className="text-center py-6"
+      >
+        <p className="text-sm text-white/20 italic font-medium">&ldquo;{quote}&rdquo;</p>
+      </motion.div>
     </div>
   );
 };

@@ -32,7 +32,7 @@ const Login: React.FC = () => {
 
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: window.location.origin + window.location.pathname },
+      options: { emailRedirectTo: 'https://saichandun1998.github.io/lifeos-personal-optimization-system/' },
     });
 
     if (error) {
@@ -51,7 +51,7 @@ const Login: React.FC = () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin + window.location.pathname,
+        redirectTo: 'https://saichandun1998.github.io/lifeos-personal-optimization-system/',
       },
     });
 

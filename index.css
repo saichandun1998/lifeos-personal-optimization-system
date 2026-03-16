@@ -115,3 +115,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
   box-shadow: 0 0 40px -10px var(--glow-color, rgba(245,158,11,0.12));
   border-color: rgba(255, 255, 255, 0.08);
 }
+
+/* ═══ Pulsing Glow for CTA ═══ */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(245,158,11,0.25); }
+  50% { box-shadow: 0 0 35px rgba(245,158,11,0.45), 0 0 60px rgba(245,158,11,0.15); }
+}
