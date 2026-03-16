@@ -85,36 +85,43 @@ const DashboardLayout: React.FC = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Sync from Supabase
+  // Sync from Supabase — only overwrite if remote data is NEWER than local
   useEffect(() => {
     const client = supabase;
     if (!user || !client) return;
     const fetchData = async () => {
       const { data, error } = await client.from('user_data').select('*').eq('user_id', user.id).single();
       if (data && !error) {
-        if (data.habits) setHabits(data.habits);
-        if (data.tasks) setTasks(data.tasks);
-        if (data.notes) setNotes(data.notes);
-        if (data.scores) setLifeScores(data.scores);
+        const localUpdatedAt = loadFromStorage<string>('lifeos_updated_at', '');
+        const remoteUpdatedAt = data.updated_at || '';
+        // Only use remote data if it's genuinely newer than local
+        if (!localUpdatedAt || remoteUpdatedAt > localUpdatedAt) {
+          if (data.habits) setHabits(data.habits);
+          if (data.tasks) setTasks(data.tasks);
+          if (data.notes) setNotes(data.notes);
+          if (data.scores) setLifeScores(data.scores);
+          if (data.focus_sessions) setFocusSessions(data.focus_sessions);
+          if (data.reflections) setDailyReflections(data.reflections);
+        }
       }
     };
     fetchData();
   }, [user]);
 
-  // Persist to Supabase
+  // Persist to Supabase — reduced debounce for faster sync
   useEffect(() => {
     const client = supabase;
     if (!user || !client) return;
     const syncData = async () => {
       await client.from('user_data').upsert({
         user_id: user.id, habits, tasks, notes, scores: lifeScores,
-        focusSessions, dailyReflections,
+        focus_sessions: focusSessions, reflections: dailyReflections,
         updated_at: new Date().toISOString(),
       });
     };
-    const timer = setTimeout(syncData, 2000);
+    const timer = setTimeout(syncData, 500); // reduced from 2s to 500ms
     return () => clearTimeout(timer);
-  }, [habits, tasks, notes, lifeScores, user]);
+  }, [habits, tasks, notes, lifeScores, focusSessions, dailyReflections, user]);
 
   // Clock
   useEffect(() => {
@@ -143,6 +150,10 @@ const DashboardLayout: React.FC = () => {
   useEffect(() => { saveToStorage('lifeos_scores', lifeScores); }, [lifeScores]);
   useEffect(() => { saveToStorage('lifeos_focus', focusSessions); }, [focusSessions]);
   useEffect(() => { saveToStorage('lifeos_reflections', dailyReflections); }, [dailyReflections]);
+  // Track local update timestamp — used to prevent stale Supabase data from overwriting
+  useEffect(() => {
+    saveToStorage('lifeos_updated_at', new Date().toISOString());
+  }, [habits, tasks, notes, lifeScores, focusSessions, dailyReflections]);
 
   // Handlers
   const handleAddTask = useCallback((n: string, h: number, p: Priority) => {
