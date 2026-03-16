@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { motion } from 'motion/react';
 import { Icons, MOTIVATIONAL_QUOTES, DEFAULT_HABITS } from './constants';
 import {
   getGreeting,
@@ -41,6 +42,7 @@ const App: React.FC = () => {
     () => MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)]
   );
   const [focusMode, setFocusMode] = useState(false);
+  const [activeNav, setActiveNav] = useState('scheduler');
 
   const [habits, setHabits] = useState<Habit[]>(() =>
     loadFromStorage('lifeos_habits', DEFAULT_HABITS)
@@ -60,7 +62,7 @@ const App: React.FC = () => {
   // Auth Listener
   useEffect(() => {
     if (!supabase) return;
-    
+
     supabase.auth.getSession().then(({ data: { session } }: { data: { session: Session | null } }) => {
       setUser(session?.user ?? null);
     });
@@ -111,11 +113,11 @@ const App: React.FC = () => {
       });
     };
 
-    const timer = setTimeout(syncData, 2000); // Debounce sync
+    const timer = setTimeout(syncData, 2000);
     return () => clearTimeout(timer);
   }, [habits, tasks, notes, lifeScores, user]);
 
-  // Clock — ticks every 30 s
+  // Clock — ticks every 30s
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 30_000);
     return () => clearInterval(timer);
@@ -131,17 +133,12 @@ const App: React.FC = () => {
     setHabits(prev => {
       return prev.map(h => {
         let newHabit = { ...h };
-        
-        // Reset 'done' status for the new day
         if (h.done && h.lastDone !== today) {
           newHabit.done = false;
         }
-
-        // Break streak if missed a day
         if (h.lastDone && h.lastDone !== today && h.lastDone !== yKey) {
           newHabit.streak = 0;
         }
-
         return newHabit;
       });
     });
@@ -153,20 +150,18 @@ const App: React.FC = () => {
   useEffect(() => { saveToStorage('lifeos_notes', notes); }, [notes]);
   useEffect(() => { saveToStorage('lifeos_scores', lifeScores); }, [lifeScores]);
 
-  // ── Task handlers ──────────────────────────────────────────────────────────
+  // ── Task handlers ──
   const handleAddTask = useCallback((n: string, h: number, p: Priority) => {
     setTasks(prev => [...prev, { id: generateId(), name: n, hour: h, priority: p, done: false }]);
   }, []);
-
   const handleToggleTask = useCallback((id: string) => {
     setTasks(prev => prev.map(t => (t.id === id ? { ...t, done: !t.done } : t)));
   }, []);
-
   const handleDeleteTask = useCallback((id: string) => {
     setTasks(prev => prev.filter(t => t.id !== id));
   }, []);
 
-  // ── Habit handlers ─────────────────────────────────────────────────────────
+  // ── Habit handlers ──
   const handleToggleHabit = useCallback((id: string) => {
     const today = todayKey();
     setHabits(prev =>
@@ -182,20 +177,17 @@ const App: React.FC = () => {
       })
     );
   }, []);
-
   const handleAddHabit = useCallback((n: string, e: string) => {
     setHabits(prev => [...prev, { id: generateId(), name: n, emoji: e, streak: 0, done: false }]);
   }, []);
-
   const handleDeleteHabit = useCallback((id: string) => {
     setHabits(prev => prev.filter(h => h.id !== id));
   }, []);
 
-  // ── Note handlers ──────────────────────────────────────────────────────────
+  // ── Note handlers ──
   const handleAddNote = useCallback((text: string) => {
     setNotes(prev => [{ id: generateId(), text, time: formatTime(new Date()) }, ...prev]);
   }, []);
-
   const handleDeleteNote = useCallback((id: string) => {
     setNotes(prev => prev.filter(n => n.id !== id));
   }, []);
@@ -206,87 +198,145 @@ const App: React.FC = () => {
     (tasks.filter(t => t.done).length / (tasks.length || 1)) * 100
   );
 
-  const scrollTo = (id: string) =>
+  const scrollTo = (id: string) => {
+    setActiveNav(id);
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const stats = [
-    { label: 'Energy Flux', value: currentEnergy.energy + '%', color: 'text-orange-400', bg: 'bg-orange-500/5', icon: Icons.zap, desc: currentEnergy.label },
-    { label: 'Operational Day', value: Math.round(dayProgress) + '%', color: 'text-blue-400', bg: 'bg-blue-600/5', icon: Icons.clock, desc: 'Day elapsed' },
-    { label: 'Objective Velocity', value: completionRate + '%', color: 'text-green-400', bg: 'bg-green-500/5', icon: Icons.target, desc: 'Tasks complete' },
+    { label: 'Energy', value: currentEnergy.energy + '%', color: '#F59E0B', icon: Icons.zap, desc: currentEnergy.label },
+    { label: 'Day Progress', value: Math.round(dayProgress) + '%', color: '#3B82F6', icon: Icons.clock, desc: 'Elapsed' },
+    { label: 'Tasks Done', value: completionRate + '%', color: '#10B981', icon: Icons.target, desc: 'Complete' },
   ];
 
   return (
-    <div
-      className="min-h-screen pb-32 transition-colors duration-700"
-      style={{ background: focusMode ? '#020202' : '#050505', color: '#fff' }}
-    >
+    <div className="min-h-screen pb-32" style={{ background: '#060608' }}>
+
+      {/* ── Animated background orbs ── */}
+      <div
+        className="bg-orb"
+        style={{
+          width: 600, height: 600,
+          background: 'radial-gradient(circle, rgba(245,158,11,0.12), transparent)',
+          top: -200, right: -100,
+          animation: 'orb-1 25s ease-in-out infinite',
+        }}
+      />
+      <div
+        className="bg-orb"
+        style={{
+          width: 500, height: 500,
+          background: 'radial-gradient(circle, rgba(59,130,246,0.08), transparent)',
+          bottom: -150, left: -100,
+          animation: 'orb-2 30s ease-in-out infinite',
+        }}
+      />
+      <div
+        className="bg-orb"
+        style={{
+          width: 400, height: 400,
+          background: 'radial-gradient(circle, rgba(139,92,246,0.06), transparent)',
+          top: '40%', left: '50%',
+          animation: 'orb-3 20s ease-in-out infinite',
+        }}
+      />
+
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8">
 
-        {/* ── Header ──────────────────────────────────────── */}
-        <header className="pt-12 pb-8 flex flex-col items-center">
-          <div className="flex items-center justify-between w-full mb-12">
+        {/* ── Header ── */}
+        <header className="pt-14 pb-10 flex flex-col items-center">
+          <div className="flex items-center justify-between w-full mb-14">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-yellow-500 flex items-center justify-center shadow-lg shadow-orange-500/20">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg shadow-amber-500/25">
                 <span className="text-black">{Icons.zap}</span>
               </div>
-              <span className="text-xs font-bold text-white/40 uppercase tracking-[0.3em]">
-                LifeOS Protocol
+              <span className="text-xs font-bold text-white/20 uppercase tracking-[0.3em]">
+                LifeOS
               </span>
             </div>
             <button
               onClick={() => setFocusMode(f => !f)}
-              aria-label={focusMode ? 'Disable focus mode' : 'Enable focus mode'}
               className={[
-                'px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all',
+                'px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all',
                 focusMode
-                  ? 'bg-orange-500 text-black shadow-lg shadow-orange-500/30'
-                  : 'bg-white/5 text-white/40 hover:bg-white/10',
+                  ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/30'
+                  : 'bg-white/[0.03] text-white/25 hover:bg-white/[0.06] border border-white/[0.06]',
               ].join(' ')}
             >
-              {focusMode ? 'Focus Active' : 'Engage Focus'}
+              {focusMode ? '● Focus Active' : 'Engage Focus'}
             </button>
           </div>
 
-          <div className="text-center space-y-4">
-            <h1 className="text-5xl md:text-7xl font-serif font-bold text-white tracking-tight leading-none">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="text-center space-y-5"
+          >
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold gradient-text tracking-tight leading-none">
               {getGreeting()}
             </h1>
-            <div className="flex items-center justify-center gap-6 text-sm font-medium text-white/30 tabular-nums">
+            <div className="flex items-center justify-center gap-6 text-sm font-medium text-white/20 tabular-nums">
               <div className="flex items-center gap-2">
-                <span className="text-orange-500/60">{Icons.clock}</span>
+                <span className="text-amber-500/40">{Icons.clock}</span>
                 {formatTime(now)}
               </div>
               <div className="w-1 h-1 rounded-full bg-white/10" />
               <div>{formatDate(now)}</div>
             </div>
-          </div>
+            <p className="text-xs text-white/12 italic max-w-xs mx-auto font-medium">
+              &ldquo;{quote}&rdquo;
+            </p>
+          </motion.div>
         </header>
 
-        {/* ── Global Stats ────────────────────────────────── */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
+        {/* ── Stats Strip ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-14">
           {stats.map((stat, i) => (
-            <div key={i} className={'p-6 rounded-3xl border border-white/5 ' + stat.bg + ' flex flex-col'}>
-              <div className="flex items-center gap-3 mb-2">
-                <span className={stat.color}>{stat.icon}</span>
-                <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 + i * 0.1, duration: 0.5 }}
+              className="relative p-5 rounded-2xl overflow-hidden"
+              style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.05)',
+              }}
+            >
+              <div
+                className="absolute -top-12 -right-12 w-28 h-28 rounded-full opacity-20 blur-3xl"
+                style={{ background: stat.color }}
+              />
+              <div className="relative flex items-center gap-3 mb-3">
+                <div
+                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                  style={{ background: stat.color + '12', color: stat.color }}
+                >
+                  {stat.icon}
+                </div>
+                <span className="text-[10px] font-bold text-white/25 uppercase tracking-widest">
                   {stat.label}
                 </span>
               </div>
-              <div className="flex items-baseline gap-2">
-                <span className={'text-3xl font-bold tabular-nums ' + stat.color}>{stat.value}</span>
-                <span className="text-xs text-white/20 font-medium">{stat.desc}</span>
+              <div className="relative flex items-baseline gap-2">
+                <span className="text-3xl font-bold tabular-nums" style={{ color: stat.color }}>
+                  {stat.value}
+                </span>
+                <span className="text-xs text-white/15 font-medium">{stat.desc}</span>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        {/* ── Main Grid ───────────────────────────────────── */}
+        {/* ── Main Grid ── */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
+          {/* Left column (2/3) */}
           <div className="lg:col-span-2 space-y-8">
             <div id="scheduler" className="section-anchor">
-              <Card title="Energy-Sync Scheduler" icon={Icons.activity} accentColor="#ff9500">
-                <div className="space-y-8 pt-4">
+              <Card title="Energy-Sync Scheduler" icon={Icons.activity} accentColor="#F59E0B">
+                <div className="space-y-8 pt-2">
                   <EnergyCurve tasks={tasks} />
                   <TaskScheduler
                     tasks={tasks}
@@ -301,21 +351,22 @@ const App: React.FC = () => {
             {!focusMode && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                 <div id="sparks" className="section-anchor">
-                  <Card title="Quick Sparks" icon={Icons.lightbulb} accentColor="#ffd93d">
+                  <Card title="Quick Sparks" icon={Icons.lightbulb} accentColor="#EAB308">
                     <QuickCapture notes={notes} onAdd={handleAddNote} onDelete={handleDeleteNote} />
                   </Card>
                 </div>
-                <Card title="Decision Dice" icon={Icons.shuffle} accentColor="#a66cff">
+                <Card title="Decision Dice" icon={Icons.shuffle} accentColor="#8B5CF6">
                   <DecisionMaker />
                 </Card>
               </div>
             )}
           </div>
 
+          {/* Right column (1/3) */}
           <div className="space-y-8">
             {!focusMode && (
               <div id="radar" className="section-anchor">
-                <Card title="Life Equilibrium" icon={Icons.target} accentColor="#4d96ff">
+                <Card title="Life Equilibrium" icon={Icons.target} accentColor="#3B82F6">
                   <LifeRadar
                     scores={lifeScores}
                     onUpdate={(k, v) => setLifeScores(prev => ({ ...prev, [k]: v }))}
@@ -324,7 +375,7 @@ const App: React.FC = () => {
               </div>
             )}
             <div id="habits" className="section-anchor">
-              <Card title="Micro-Habit Loops" icon={Icons.flame} accentColor="#6bcb77">
+              <Card title="Micro-Habit Loops" icon={Icons.flame} accentColor="#10B981">
                 <HabitTracker
                   habits={habits}
                   onToggle={handleToggleHabit}
@@ -342,41 +393,50 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* ── About Section ───────────────────────────────── */}
+        {/* ── About ── */}
         {!focusMode && (
           <div id="about" className="mt-24 section-anchor">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="h-px flex-grow bg-white/10" />
-              <h2 className="text-xs font-bold text-white/30 uppercase tracking-[0.4em]">System Documentation</h2>
-              <div className="h-px flex-grow bg-white/10" />
+            <div className="flex items-center gap-6 mb-10">
+              <div className="h-px flex-grow bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+              <h2 className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em]">System Protocol</h2>
+              <div className="h-px flex-grow bg-gradient-to-l from-transparent via-white/[0.06] to-transparent" />
             </div>
             <About />
           </div>
         )}
 
-        {/* ── Footer ──────────────────────────────────────── */}
+        {/* ── Footer ── */}
         <footer className="mt-24 pb-12 text-center">
-          <div className="flex flex-col items-center gap-4">
-            <div className="flex items-center gap-2 text-[10px] font-bold text-white/20 uppercase tracking-widest">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              System Online • v1.0.4
+          <div className="flex flex-col items-center gap-3">
+            <div className="flex items-center gap-2 text-[10px] font-bold text-white/12 uppercase tracking-widest">
+              <span className="relative w-2 h-2">
+                <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-40" />
+                <span className="absolute inset-0 rounded-full bg-emerald-400" />
+              </span>
+              System Online
             </div>
-            <p className="text-[10px] text-white/30 italic max-w-xs">
-              &ldquo;{quote}&rdquo;
-            </p>
           </div>
         </footer>
       </div>
 
-      {/* ── Bottom Nav Dock ─────────────────────────────── */}
+      {/* ── Bottom Nav Dock ── */}
       <nav className="glass-dock fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around py-3 px-6">
         {NAV_SECTIONS.map(s => (
           <button
             key={s.id}
             onClick={() => scrollTo(s.id)}
-            aria-label={'Go to ' + s.label}
-            className="flex flex-col items-center gap-1 text-white/30 hover:text-orange-400 transition-colors group"
+            className={[
+              'flex flex-col items-center gap-1 transition-colors group relative',
+              activeNav === s.id ? 'text-amber-400' : 'text-white/20 hover:text-white/40',
+            ].join(' ')}
           >
+            {activeNav === s.id && (
+              <motion.div
+                layoutId="nav-indicator"
+                className="absolute -top-3 w-6 h-0.5 rounded-full bg-amber-400"
+                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              />
+            )}
             <span className="group-hover:scale-110 transition-transform">{Icons[s.icon]}</span>
             <span className="text-[9px] font-bold uppercase tracking-widest">{s.label}</span>
           </button>
