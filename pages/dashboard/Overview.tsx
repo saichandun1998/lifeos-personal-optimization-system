@@ -6,6 +6,7 @@ import { useDashboard } from '../DashboardLayout';
 import { getCurrentEnergy, getGreeting, todayKey } from '../../utils';
 import EnergyCurve from '../../components/EnergyCurve';
 import MiniRadar from '../../components/MiniRadar';
+import AICoach from '../../components/AICoach';
 
 const Overview: React.FC = () => {
   const { habits, tasks, notes, lifeScores, focusSessions } = useDashboard();
@@ -60,6 +61,9 @@ const Overview: React.FC = () => {
           </motion.div>
         ))}
       </div>
+
+      {/* AI Coach */}
+      <AICoach habits={habits} tasks={tasks} lifeScores={lifeScores} focusSessions={focusSessions} />
 
       {/* Two-column: Energy Curve + Focus CTA */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
