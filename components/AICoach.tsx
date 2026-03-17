@@ -188,13 +188,16 @@ const AICoach: React.FC<AICoachProps> = ({ habits, tasks, lifeScores, focusSessi
               className="space-y-3"
             >
               {insightLines.map((line, i) => {
-                const cleaned = line.replace(/^[\s*•\-]+/, '').trim();
+                // Remove bullet markers without eating ** bold markers
+                const cleaned = line.replace(/^\s*(?:[•\-]|\*(?!\*))\s*/, '').trim();
                 if (!cleaned) return null;
+                // Skip preamble lines (no actionable content)
+                if (cleaned.toLowerCase().startsWith('here are') || cleaned.toLowerCase().startsWith('based on') || cleaned.endsWith(':')) return null;
 
                 // Try to split on bold markdown (**label**)
-                const boldMatch = cleaned.match(/^\*\*(.+?)\*\*[\s:—\-]*(.*)/);
+                const boldMatch = cleaned.match(/\*\*(.+?)\*\*[:\s—\-]*(.*)/);
                 const label = boldMatch ? boldMatch[1] : null;
-                const body = boldMatch ? boldMatch[2] : cleaned;
+                const body = boldMatch ? boldMatch[2] : cleaned.replace(/\*\*/g, '');
 
                 return (
                   <motion.div

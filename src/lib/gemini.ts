@@ -69,13 +69,16 @@ USER DATA:
 - Focus today: ${data.focusMinutes} minutes across ${data.focusSessions} sessions
 
 RULES:
+- Give exactly 3 insights, no more no less
 - Keep each insight to 1-2 sentences max
 - Reference specific numbers from their data
 - If they have low scores, suggest ONE specific action
 - If streaks are strong, acknowledge it
 - If no data yet, welcome them and suggest getting started
-- Use emoji sparingly (1 per insight max)
-- Format as bullet points starting with a bold label`;
+- Use exactly 1 emoji per insight
+- Format EXACTLY as: **Label** Your insight text here
+- Do NOT add any preamble, introduction, or closing line
+- Start directly with the first **Label**`;
 }
 
 export const isGeminiConfigured = !!GEMINI_API_KEY;
