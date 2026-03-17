@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ENERGY_CURVE, Icons } from '../constants';
-import { formatHour } from '../utils';
+import { formatHour, suggestOptimalHour, getSchedulingAdvice } from '../utils';
 import { Task, Priority } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -37,6 +37,14 @@ const TaskScheduler: React.FC<TaskSchedulerProps> = ({ tasks, onAdd, onToggle, o
     if (e.key === 'Enter') handleAdd();
     if (e.key === 'Escape') { setAdding(false); setName(''); }
   };
+
+  // Auto-suggest optimal hour when priority changes
+  useEffect(() => {
+    if (adding) {
+      const suggested = suggestOptimalHour(priority, tasks);
+      setHour(suggested);
+    }
+  }, [priority, adding, tasks]);
 
   const sorted = [...tasks].sort((a, b) => a.hour - b.hour);
 
@@ -88,9 +96,19 @@ const TaskScheduler: React.FC<TaskSchedulerProps> = ({ tasks, onAdd, onToggle, o
                   )}
                 </button>
 
-                <span className="text-[10px] font-bold text-white/20 w-14 uppercase flex-shrink-0 tabular-nums">
-                  {formatHour(t.hour)}
-                </span>
+                <div className="flex-shrink-0 w-20">
+                  <span className="text-[10px] font-bold text-white/20 uppercase tabular-nums">
+                    {formatHour(t.hour)}
+                  </span>
+                  {!t.done && (
+                    <div className="flex items-center gap-1 mt-0.5">
+                      <div className="h-1 rounded-full" style={{
+                        width: `${Math.min(40, (ENERGY_CURVE.find(e => e.hour === t.hour)?.energy ?? 50) * 0.4)}px`,
+                        background: (ENERGY_CURVE.find(e => e.hour === t.hour)?.energy ?? 50) >= 70 ? '#10B981' : (ENERGY_CURVE.find(e => e.hour === t.hour)?.energy ?? 50) >= 40 ? '#f0a030' : '#EF4444'
+                      }} />
+                    </div>
+                  )}
+                </div>
 
                 <span className={'flex-grow text-sm truncate ' + (t.done ? 'line-through text-white/20' : 'text-white/80')}>
                   {t.name}
@@ -164,6 +182,11 @@ const TaskScheduler: React.FC<TaskSchedulerProps> = ({ tasks, onAdd, onToggle, o
                 ))}
               </div>
             </div>
+            {name.trim() && (
+              <div className="text-[11px] text-white/30 font-medium mt-1">
+                {getSchedulingAdvice(hour, priority) || `Energy at ${formatHour(hour)}: ${(() => { const p = ENERGY_CURVE.find(e => e.hour === hour); return p ? p.energy + '% \u2014 ' + p.label : 'Unknown'; })()}`}
+              </div>
+            )}
             <div className="flex gap-2">
               <button
                 onClick={() => { setAdding(false); setName(''); }}
@@ -185,7 +208,7 @@ const TaskScheduler: React.FC<TaskSchedulerProps> = ({ tasks, onAdd, onToggle, o
             key="trigger"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            onClick={() => setAdding(true)}
+            onClick={() => { setAdding(true); setHour(suggestOptimalHour(priority, tasks)); }}
             className="w-full py-3 border border-dashed border-white/[0.06] rounded-xl text-white/20 text-sm hover:text-amber-400 hover:border-amber-500/30 transition-all"
           >
             + Add Objective

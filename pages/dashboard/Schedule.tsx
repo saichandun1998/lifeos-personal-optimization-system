@@ -14,7 +14,7 @@ const Schedule: React.FC = () => {
     <div className="max-w-6xl space-y-8">
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-display font-bold text-white mb-1">Energy-Sync Scheduler</h1>
-        <p className="text-sm text-white/25 font-medium">Align your tasks with your natural energy curve.</p>
+        <p className="text-sm text-white/25 font-medium">Tasks auto-scheduled to your peak energy windows.</p>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
