@@ -12,6 +12,7 @@ import {
 import { Habit, Task, Note, LifeScores, Priority, FocusSession, DailyReflection } from '../types';
 import { supabase } from '../src/lib/supabase';
 import { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
+import Onboarding from '../components/Onboarding';
 
 export interface DashboardContextType {
   habits: Habit[];
@@ -44,6 +45,7 @@ const NAV_ITEMS = [
   { to: '/app/schedule', icon: Icons.clock, label: 'Schedule', end: false },
   { to: '/app/habits', icon: Icons.flame, label: 'Habits', end: false },
   { to: '/app/journal', icon: Icons.journal, label: 'Journal', end: false },
+  { to: '/app/settings', icon: Icons.settings, label: 'Settings', end: false },
 ];
 
 const DashboardLayout: React.FC = () => {
@@ -51,6 +53,7 @@ const DashboardLayout: React.FC = () => {
   const [now, setNow] = useState(new Date());
   const [user, setUser] = useState<User | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(() => !loadFromStorage('lifeos_onboarded', false));
 
   const [habits, setHabits] = useState<Habit[]>(() =>
     loadFromStorage('lifeos_habits', DEFAULT_HABITS)
@@ -192,6 +195,20 @@ const DashboardLayout: React.FC = () => {
     setDailyReflections(prev => [...prev, reflection]);
   }, []);
 
+  const handleOnboardingComplete = useCallback((selectedHabits: { name: string; emoji: string }[], goal: string) => {
+    const newHabits = selectedHabits.map(h => ({
+      id: generateId(),
+      name: h.name,
+      emoji: h.emoji,
+      streak: 0,
+      done: false,
+    }));
+    setHabits(newHabits);
+    saveToStorage('lifeos_onboarded', true);
+    saveToStorage('lifeos_goal', goal);
+    setShowOnboarding(false);
+  }, []);
+
   const handleLogout = async () => {
     if (supabase && user) {
       await supabase.auth.signOut();
@@ -305,6 +322,8 @@ const DashboardLayout: React.FC = () => {
           <Outlet context={ctx} />
         </main>
       </div>
+
+      {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
     </div>
   );
 };

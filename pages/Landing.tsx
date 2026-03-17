@@ -301,6 +301,10 @@ const Landing: React.FC = () => {
             <span className="text-xs font-bold text-white/30">LifeOS</span>
           </div>
           <p className="text-[11px] text-white/15 font-medium">&copy; 2026 LifeOS. Built for peak performance.</p>
+          <div className="flex items-center gap-4 text-[11px] text-white/15">
+            <Link to="/privacy" className="hover:text-white/30 transition-colors">Privacy</Link>
+            <Link to="/terms" className="hover:text-white/30 transition-colors">Terms</Link>
+          </div>
         </div>
       </footer>
     </div>

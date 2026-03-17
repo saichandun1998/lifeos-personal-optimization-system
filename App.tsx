@@ -9,6 +9,9 @@ import Schedule from './pages/dashboard/Schedule';
 import Habits from './pages/dashboard/Habits';
 import Focus from './pages/dashboard/Focus';
 import Journal from './pages/dashboard/Journal';
+import Settings from './pages/dashboard/Settings';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 
 /** Handles OAuth redirect — after Google login, Supabase puts tokens in the URL hash.
  *  BrowserRouter doesn't use the hash, so Supabase can read it freely.
@@ -44,6 +47,8 @@ const App: React.FC = () => {
         {/* Public */}
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
 
         {/* Dashboard */}
         <Route path="/app" element={<DashboardLayout />}>
@@ -52,6 +57,7 @@ const App: React.FC = () => {
           <Route path="schedule" element={<Schedule />} />
           <Route path="habits" element={<Habits />} />
           <Route path="journal" element={<Journal />} />
+          <Route path="settings" element={<Settings />} />
           {/* Redirects for old routes */}
           <Route path="notes" element={<Navigate to="/app/journal" replace />} />
           <Route path="decide" element={<Navigate to="/app/journal" replace />} />
