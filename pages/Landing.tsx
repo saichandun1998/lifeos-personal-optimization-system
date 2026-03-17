@@ -4,22 +4,22 @@ import { motion } from 'motion/react';
 import { Icons } from '../constants';
 
 const FEATURES = [
-  { icon: Icons.activity, title: 'Energy-Sync Scheduler', desc: 'Schedule tasks aligned with your biological energy curve. Get warnings when you put hard work in low-energy slots.', color: '#F59E0B' },
-  { icon: Icons.flame, title: 'Habit Loops', desc: 'Build atomic habits with streak tracking and automatic daily resets. Consistency over intensity.', color: '#10B981' },
-  { icon: Icons.target, title: 'Life Radar', desc: '360° view of your life balance across health, work, social, mind, wealth, and play.', color: '#3B82F6' },
-  { icon: Icons.lightbulb, title: 'Quick Capture', desc: 'Offload ideas instantly so your mind stays focused on the task at hand.', color: '#EAB308' },
-  { icon: Icons.shuffle, title: 'Decision Engine', desc: 'When you are stuck in analysis paralysis, let structured randomness break the tie.', color: '#8B5CF6' },
-  { icon: Icons.user, title: 'Cloud Sync', desc: 'Your data follows you across every device. Sign up once, access everywhere.', color: '#EC4899' },
+  { icon: Icons.timer, title: 'Focus Timer', desc: 'Energy-aware Pomodoro sessions that adapt to your biology. Deep work when you peak, rest when you dip.', color: '#f0a030' },
+  { icon: Icons.activity, title: 'Smart Scheduling', desc: 'Add a task, pick the priority — LifeOS auto-assigns it to your optimal energy window. No other app does this.', color: '#10B981' },
+  { icon: Icons.flame, title: 'Habit Streaks', desc: 'Build atomic habits with daily tracking, streak counters, and automatic resets. Consistency over intensity.', color: '#EF4444' },
+  { icon: Icons.target, title: 'Life Radar', desc: '360° view of your life balance across health, work, social, mind, wealth, and play. Spot blind spots instantly.', color: '#3B82F6' },
+  { icon: Icons.journal, title: 'Daily Journal', desc: 'Capture sparks, reflect on your day with guided prompts, and track your mood over time.', color: '#8B5CF6' },
+  { icon: Icons.zap, title: 'AI Coach (Coming Soon)', desc: 'Personalized daily insights powered by AI. "You complete 73% more tasks before noon — schedule hard work earlier."', color: '#EC4899' },
 ];
 
 const STEPS = [
-  { num: '01', title: 'Map Your Energy', desc: 'Understand when you hit peak performance and when your body needs rest.' },
-  { num: '02', title: 'Align Your Tasks', desc: 'Schedule high-priority work during high-energy windows. Low-energy periods get admin tasks.' },
-  { num: '03', title: 'Track & Improve', desc: 'Build habits, monitor life balance, and iterate daily. Small wins compound into massive results.' },
+  { num: '01', title: 'Tell Us Your Tasks', desc: 'Add what you need to do today with a priority level. Takes 30 seconds.' },
+  { num: '02', title: 'We Schedule Them', desc: 'LifeOS maps your tasks to your natural energy curve. High-priority work goes to peak hours automatically.' },
+  { num: '03', title: 'Focus & Improve', desc: 'Use the energy-aware Focus Timer, track habits, journal daily. Watch your productivity transform.' },
 ];
 
 const FREE_FEATURES = ['Energy scheduler', 'Habit tracking (5 habits)', 'Life radar', 'Quick notes', 'Decision engine', 'Local storage'];
-const PRO_FEATURES = ['Everything in Free', 'Unlimited habits', 'Cloud sync across devices', 'Data export', 'Priority support', 'Early access to new features'];
+const PRO_FEATURES = ['Everything in Free', 'AI-powered daily insights', 'Unlimited focus sessions', 'Adaptive timer duration', 'Cloud sync across devices', 'Data export & analytics'];
 
 const Landing: React.FC = () => {
   return (
@@ -98,7 +98,7 @@ const Landing: React.FC = () => {
               <div className="p-6 flex gap-4 min-h-[250px]">
                 {/* Sidebar mock */}
                 <div className="hidden sm:flex flex-col gap-2 w-40 flex-shrink-0">
-                  {['Overview', 'Schedule', 'Habits', 'Radar', 'Notes'].map((item, i) => (
+                  {['Dashboard', 'Focus', 'Schedule', 'Habits', 'Journal'].map((item, i) => (
                     <div key={i} className={'px-3 py-2 rounded-lg text-xs font-medium ' + (i === 0 ? 'bg-amber-500/10 text-amber-400' : 'text-white/15')}>
                       {item}
                     </div>
@@ -154,6 +154,49 @@ const Landing: React.FC = () => {
               <p className="text-xs text-white/30 leading-relaxed font-medium">{f.desc}</p>
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      {/* ── What Makes Us Different ── */}
+      <section className="relative z-10 max-w-5xl mx-auto px-6 py-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-display font-extrabold text-white mb-6" style={{ letterSpacing: '-0.03em' }}>
+              Other apps ask<br /><span className="text-white/30">what</span> to do.<br />
+              LifeOS tells you<br /><span className="gradient-text">when</span> to do it.
+            </h2>
+            <p className="text-white/35 font-medium leading-relaxed">
+              Todoist doesn't know your energy. Google Calendar doesn't care when you peak. LifeOS is the only productivity system that schedules your work around your biology — so you get more done with less effort.
+            </p>
+          </div>
+          <div className="space-y-4">
+            {[
+              { label: 'Peak Performance', time: '9 — 11 AM', energy: 95, desc: 'Deep work, strategy, writing' },
+              { label: 'Post-Lunch Dip', time: '1 — 3 PM', energy: 55, desc: 'Admin, emails, light tasks' },
+              { label: 'Second Wind', time: '3 — 5 PM', energy: 75, desc: 'Collaboration, creative work' },
+            ].map((block, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.15 }}
+                viewport={{ once: true }}
+                className="flex items-center gap-4 p-4 rounded-xl border border-white/[0.04]"
+                style={{ background: 'rgba(255,255,255,0.015)' }}
+              >
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `rgba(${block.energy > 80 ? '16,185,129' : block.energy > 60 ? '240,160,48' : '239,68,68'},0.1)` }}>
+                  <span className="text-lg font-display font-bold" style={{ color: block.energy > 80 ? '#10B981' : block.energy > 60 ? '#f0a030' : '#EF4444' }}>{block.energy}%</span>
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-display font-bold text-white/80">{block.label}</span>
+                    <span className="text-[10px] text-white/20 font-medium">{block.time}</span>
+                  </div>
+                  <p className="text-xs text-white/30 font-medium">{block.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
